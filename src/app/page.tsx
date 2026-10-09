@@ -1,15 +1,37 @@
-import Marquee from "@/components/Marquee";
+
 import MainNews from "@/components/MainNews";
 import NewsCard from "@/components/NewsCard";
-import React from "react";
 import MostRead from "@/components/MostRead";
 
-const Homepage = async () => {
-  const res = await fetch("https://news-api-v2.vercel.app/api/news/sections", {
-    next: { revalidate: 300 },
-  });
+type Article = {
+  id: string;
+  title: string;
+  description: string | null;
+  link: string;
+  imageUrl: string | null;
+  imageAlt: string | null;
+  category: string;
+  isLive: boolean;
+  firstPublished: string | null;
+  type?: string;
+};
 
-  let sections = [];
+type NewsSection = {
+  curationId: string;
+  title: string;
+  articles: Article[];
+};
+
+const Homepage = async () => {
+  const res = await fetch(
+    "https://news-api-v2.vercel.app/api/news/sections",
+    {
+      next: { revalidate: 300 },
+    }
+  );
+
+  let sections: NewsSection[] = [];
+
   if (res.ok) {
     const data = await res.json();
     sections = data?.data ?? [];
@@ -24,11 +46,10 @@ const Homepage = async () => {
     );
 
   return (
-    <div>
-    
-      <div className="grid gap-5 grid-cols-3 max-w-7xl mx-auto mt-5 px-4">
+    <div className="max-w-7xl mx-auto mt-5 px-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* News Section */}
-        <div className="col-span-2">
+        <div className="lg:col-span-2 min-w-0">
           <MainNews news={mainNews} />
 
           <div className="grid gap-8 mt-8">
@@ -38,10 +59,12 @@ const Homepage = async () => {
                   {section.title}
                 </h2>
 
-                <div className="grid grid-cols-3 gap-4">
-                  {section.articles.map((news) => (
-                    <NewsCard key={news.id} news={news} />
-                  ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {section.articles
+                    .filter((article) => article.type !== "link")
+                    .map((news) => (
+                      <NewsCard key={news.id} news={news} />
+                    ))}
                 </div>
               </div>
             ))}
@@ -49,9 +72,9 @@ const Homepage = async () => {
         </div>
 
         {/* Most Read Section */}
-        <div className="col-span-1">
+        <aside className="min-w-0">
           <MostRead />
-        </div>
+        </aside>
       </div>
     </div>
   );
