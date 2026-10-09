@@ -1,36 +1,129 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📰 News Orbit
 
-## Getting Started
+A modern Bengali news website built with Next.js, designed to help readers explore the latest news through a clean, organized, and easy-to-use interface.
 
-First, run the development server:
+🔗 **Live Demo:** [https://newsorbit-nu.vercel.app/](https://newsorbit-nu.vercel.app/)
+
+## ✨ Features
+
+- 📰 **News Homepage** — Browse news through an organized homepage layout.
+- 🚨 **Breaking News Marquee** — A scrolling news ticker for displaying important updates.
+- 🗂️ **News Sections** — Explore news organized into different sections.
+- ⭐ **Featured News** — Highlight important news stories.
+- 📈 **Most Read News** — Display popular news articles.
+- 📰 **Reusable News Cards** — Present news articles with a consistent layout.
+- 🇧🇩 **Bengali Language Support** — A Bengali-focused reading experience.
+- 🔤 **Bengali Typography** — Uses the Noto Serif Bengali font.
+- 📱 **Responsive Interface** — Designed for a convenient news-reading experience across screen sizes.
+- ⚡ **Data Revalidation** — Uses Next.js caching and revalidation for efficient data fetching.
+- 🎨 **Clean Navigation** — Header and navigation links for browsing the website.
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| Next.js | React framework and application routing |
+| React.js | UI development |
+| TypeScript | Type-safe development |
+| CSS | Styling and layout |
+| Noto Serif Bengali | Bengali typography |
+| Next.js Fetch API | News data fetching and caching |
+| Vercel | Deployment and hosting |
+
+## 📂 Project Structure
+
+```text
+news-orbit/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── globals.css
+├── components/
+│   ├── Header.tsx
+│   ├── Navlinks.tsx
+│   ├── Marquee.tsx
+│   ├── MainNews.tsx
+│   ├── NewsCard.tsx
+│   └── MostRead.tsx
+├── public/
+│   └── NO.png
+├── package.json
+└── README.md
+```
+
+*Note: The structure above illustrates the main files and components; your actual project may contain additional files.*
+
+## 🚀 Getting Started
+
+Follow these steps to run the project locally.
+
+### Prerequisites
+
+- Node.js
+- npm, yarn, pnpm, or bun
+- Git
+
+### 1. Clone the Repository
+
+```bash
+git clone YOUR_GITHUB_REPOSITORY_URL
+```
+
+Replace `YOUR_GITHUB_REPOSITORY_URL` with your actual GitHub repository URL.
+
+### 2. Navigate to the Project
+
+```bash
+cd news-orbit
+```
+
+### 3. Install Dependencies
+
+```bash
+npm install
+```
+
+### 4. Start the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 5. Open in Your Browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Visit [http://localhost:3000](http://localhost:3000).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ⚡ Performance
 
-## Learn More
+News Orbit uses Next.js data-fetching capabilities to retrieve news content. Configured revalidation helps keep cached news data fresh while reducing unnecessary requests.
 
-To learn more about Next.js, take a look at the following resources:
+Example:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```tsx
+const res = await fetch(
+  "https://news-api-v2.vercel.app/api/news/sections",
+  {
+    next: { revalidate: 300 },
+  }
+);
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This configuration allows cached data to be revalidated after 300 seconds.
 
-## Deploy on Vercel
+## 🌐 Live Website
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Visit the deployed application:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**[News Orbit — Live Demo](https://newsorbit-nu.vercel.app/)**
+
+## 🎯 Project Goal
+
+The goal of News Orbit is to provide readers with an accessible, organized, and user-friendly Bengali news-reading experience using modern web technologies.
+
+## 👨‍💻 Developer
+
+Developed with ❤️ using Next.js, React, and TypeScript.
+
+## 📄 License
+
+This project is available for learning and portfolio purposes. Add an appropriate open-source license if you intend to distribute or reuse the source code publicly.
