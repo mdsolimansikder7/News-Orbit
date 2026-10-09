@@ -12,6 +12,9 @@ const notoSerifBengali = Noto_Serif_Bengali({
 export const metadata: Metadata = {
   title: "News Orbit",
   description: "বাংলা ভাষায় সর্বশেষ খবর",
+ icons: {
+icon: "/NO.png",
+  },  
 };
 
 export default function RootLayout({
