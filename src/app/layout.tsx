@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Serif_Bengali } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Header from "../components/Header";
 import Navlinks from "../components/Navlinks";
@@ -33,6 +34,7 @@ export default function RootLayout({
         <Marquee />
 
         <main>{children}</main>
+        <Analytics />
       </body>
     </html>
   );
