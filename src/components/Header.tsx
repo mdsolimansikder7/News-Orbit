@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import AuthButtons from "./AuthButtons";
+import AuthButtons from "./AuthButton";
 
 const Headerpage = () => {
   const date = new Date().toLocaleDateString("bn-BD", {
