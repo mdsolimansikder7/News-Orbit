@@ -6,7 +6,6 @@ import NextLink from "next/link";
 
 import { Check, CircleXmark, CircleCheck } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
-import { FaGithub, FaDiscord } from "react-icons/fa";
 
 import {
   Button,
@@ -25,65 +24,10 @@ export default function SignUpPage() {
 
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [githubLoading, setGithubLoading] = useState(false);
-  const [discordLoading, setDiscordLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const isBusy =
-    loading || googleLoading || githubLoading || discordLoading;
-
-  const handleSignInWithDiscord = async () => {
-    setErrorMessage("");
-    setSuccessMessage("");
-    setDiscordLoading(true);
-
-    try {
-      const { error } = await authClient.signIn.social({
-        provider: "discord",
-        callbackURL: "/",
-      });
-
-      if (error) {
-        setErrorMessage(
-          error.message || "Discord দিয়ে প্রবেশ করা যায়নি। আবার চেষ্টা করুন।"
-        );
-      }
-    } catch (error) {
-      console.error("Discord sign in error:", error);
-      setErrorMessage(
-        "Discord মাধ্যমে প্রবেশ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"
-      );
-    } finally {
-      setDiscordLoading(false);
-    }
-  };
-
-  const handleSignInWithGithub = async () => {
-    setErrorMessage("");
-    setSuccessMessage("");
-    setGithubLoading(true);
-
-    try {
-      const { error } = await authClient.signIn.social({
-        provider: "github",
-        callbackURL: "/",
-      });
-
-      if (error) {
-        setErrorMessage(
-          error.message || "Github দিয়ে প্রবেশ করা যায়নি। আবার চেষ্টা করুন।"
-        );
-      }
-    } catch (error) {
-      console.error("Github sign in error:", error);
-      setErrorMessage(
-        "Github মাধ্যমে প্রবেশ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"
-      );
-    } finally {
-      setGithubLoading(false);
-    }
-  };
+  const isBusy = loading || googleLoading;
 
   const handleSignInWithGoogle = async () => {
     setErrorMessage("");
@@ -344,30 +288,6 @@ export default function SignUpPage() {
           {googleLoading
             ? "সংযোগ করা হচ্ছে..."
             : "Google দিয়ে প্রবেশ করুন"}
-        </Button>
-
-        <Button
-          type="button"
-          onPress={handleSignInWithGithub}
-          isDisabled={isBusy}
-          className="mt-3 w-full border border-gray-200 bg-white font-medium text-gray-800"
-        >
-          <FaGithub size={18} />
-          {githubLoading
-            ? "সংযোগ করা হচ্ছে..."
-            : "Github দিয়ে প্রবেশ করুন"}
-        </Button>
-
-        <Button
-          type="button"
-          onPress={handleSignInWithDiscord}
-          isDisabled={isBusy}
-          className="mt-3 w-full border border-gray-200 bg-white font-medium text-gray-800"
-        >
-          <FaDiscord size={18} />
-          {discordLoading
-            ? "সংযোগ করা হচ্ছে..."
-            : "Discord দিয়ে প্রবেশ করুন"}
         </Button>
       </div>
     </main>
