@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -47,13 +46,13 @@ export default function SignUpPage() {
 
       if (error) {
         setErrorMessage(
-          error.message || "Discord দিয়ে প্রবেশ করা যায়নি। আবার চেষ্টা করুন।"
+          error.message || "Discord দিয়ে প্রবেশ করা যায়নি। আবার চেষ্টা করুন।"
         );
       }
     } catch (error) {
       console.error("Discord sign in error:", error);
       setErrorMessage(
-        "Discord মাধ্যমে প্রবেশ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"
+        "Discord মাধ্যমে প্রবেশ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"
       );
     } finally {
       setDiscordLoading(false);
@@ -73,13 +72,13 @@ export default function SignUpPage() {
 
       if (error) {
         setErrorMessage(
-          error.message || "Github দিয়ে প্রবেশ করা যায়নি। আবার চেষ্টা করুন।"
+          error.message || "Github দিয়ে প্রবেশ করা যায়নি। আবার চেষ্টা করুন।"
         );
       }
     } catch (error) {
       console.error("Github sign in error:", error);
       setErrorMessage(
-        "Github মাধ্যমে প্রবেশ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"
+        "Github মাধ্যমে প্রবেশ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"
       );
     } finally {
       setGithubLoading(false);
@@ -99,13 +98,13 @@ export default function SignUpPage() {
 
       if (error) {
         setErrorMessage(
-          error.message || "Google দিয়ে প্রবেশ করা যায়নি। আবার চেষ্টা করুন।"
+          error.message || "Google দিয়ে প্রবেশ করা যায়নি। আবার চেষ্টা করুন।"
         );
       }
     } catch (error) {
       console.error("Google sign in error:", error);
       setErrorMessage(
-        "Google মাধ্যমে প্রবেশ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"
+        "Google মাধ্যমে প্রবেশ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"
       );
     } finally {
       setGoogleLoading(false);
@@ -176,7 +175,7 @@ export default function SignUpPage() {
         </h1>
 
         <p className="mb-6 text-sm text-gray-500">
-          অ্যাকাউন্ট খুলতে প্রয়োজনীয় তথ্য দিন।
+          অ্যাকাউন্ট খুলতে প্রয়োজনীয় তথ্য দিন।
         </p>
 
         {errorMessage && (
@@ -190,7 +189,7 @@ export default function SignUpPage() {
               className="mt-0.5 shrink-0"
             />
             <div>
-              <p className="font-semibold">অ্যাকাউন্ট তৈরি করা যায়নি</p>
+              <p className="font-semibold">অ্যাকাউন্ট তৈরি করা যায়নি</p>
               <p className="mt-1">{errorMessage}</p>
             </div>
           </div>
@@ -207,7 +206,7 @@ export default function SignUpPage() {
               className="mt-0.5 shrink-0"
             />
             <div>
-              <p className="font-semibold">সফল হয়েছে</p>
+              <p className="font-semibold">সফল হয়েছে</p>
               <p className="mt-1">{successMessage}</p>
             </div>
           </div>
@@ -258,7 +257,7 @@ export default function SignUpPage() {
               }
 
               if (!/[A-Z]/.test(value)) {
-                return "পাসওয়ার্ডে অন্তত একটি ইংরেজি বড় হাতের অক্ষর থাকতে হবে।";
+                return "পাসওয়ার্ডে অন্তত একটি ইংরেজি বড় হাতের অক্ষর থাকতে হবে।";
               }
 
               if (!/[0-9]/.test(value)) {
@@ -274,7 +273,7 @@ export default function SignUpPage() {
               autoComplete="new-password"
             />
             <Description>
-              কমপক্ষে ৮ অক্ষর, একটি বড় হাতের ইংরেজি অক্ষর ও একটি সংখ্যা দিন।
+              কমপক্ষে ৮ অক্ষর, একটি বড় হাতের ইংরেজি অক্ষর ও একটি সংখ্যা দিন।
             </Description>
             <FieldError />
           </TextField>
@@ -304,7 +303,7 @@ export default function SignUpPage() {
 
             <Button
               type="reset"
-              variant="bordered"
+              variant="outline"
               isDisabled={isBusy}
               className="flex-1 border-red-200 text-red-700"
               onPress={() => {
@@ -344,7 +343,7 @@ export default function SignUpPage() {
           <FcGoogle size={18} />
           {googleLoading
             ? "সংযোগ করা হচ্ছে..."
-            : "Google দিয়ে প্রবেশ করুন"}
+            : "Google দিয়ে প্রবেশ করুন"}
         </Button>
 
         <Button
@@ -356,7 +355,7 @@ export default function SignUpPage() {
           <FaGithub size={18} />
           {githubLoading
             ? "সংযোগ করা হচ্ছে..."
-            : "Github দিয়ে প্রবেশ করুন"}
+            : "Github দিয়ে প্রবেশ করুন"}
         </Button>
 
         <Button
@@ -368,7 +367,7 @@ export default function SignUpPage() {
           <FaDiscord size={18} />
           {discordLoading
             ? "সংযোগ করা হচ্ছে..."
-            : "Discord দিয়ে প্রবেশ করুন"}
+            : "Discord দিয়ে প্রবেশ করুন"}
         </Button>
       </div>
     </main>
