@@ -58,6 +58,7 @@ const Headerpage = () => {
           >
             সাইন আপ
           </Link>
+          <Link href="/profile">আমার প্রোফাইল</Link>
         </nav>
 
       </div>
