@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "../components/Header";
 import Navlinks from "../components/Navlinks";
 import Marquee from "../components/Marquee";
+import { Analytics } from "@vercel/analytics/next";
 
 const notoSerifBengali = Noto_Serif_Bengali({
   subsets: ["latin", "bengali"],
@@ -33,6 +34,7 @@ export default function RootLayout({
         <Marquee />
 
         <main>{children}</main>
+        <Analytics />
       </body>
     </html>
   );
