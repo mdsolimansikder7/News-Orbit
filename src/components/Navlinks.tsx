@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
+
 type Category = {
   slug: string;
   title: string;
@@ -37,6 +38,7 @@ const Navlinks = async () => {
         </Link>
       ))}
     </nav>
+    
   );
 };
 
