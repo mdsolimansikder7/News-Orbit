@@ -27,8 +27,18 @@ export const auth = betterAuth({
     },
   },
 
+  // নতুন: user-এর অতিরিক্ত ব্যক্তিগত তথ্য
+  user: {
+    additionalFields: {
+      phone: { type: "string", required: false },
+      birthDate: { type: "string", required: false },
+      address: { type: "string", required: false },
+      bio: { type: "string", required: false },
+    },
+  },
+
   trustedOrigins: [
     "http://localhost:3000",
-   " https://newsorbit-nu.vercel.app"
+    "https://newsorbit-nu.vercel.app",
   ],
 });
