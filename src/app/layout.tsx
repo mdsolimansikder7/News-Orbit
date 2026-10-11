@@ -32,7 +32,7 @@ export default function RootLayout({
 
         <Marquee />
 
-        <main>{children}</main>
+        <div>{children}</div>
       </body>
     </html>
   );

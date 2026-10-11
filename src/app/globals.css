@@ -1,2 +1,58 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@media (max-width: 767px) {
+
+    html,
+    body {
+        overflow-x: hidden;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    img,
+    video,
+    iframe,
+    svg {
+        max-width: 100%;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    a,
+    button {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    input,
+    textarea,
+    select {
+        font-size: 16px;
+    }
+
+    main[lang="bn"] button {
+        min-height: 44px;
+    }
+
+    main[lang="bn"] {
+        padding: 1.5rem 0.75rem;
+        align-items: flex-start;
+    }
+
+    main[lang="bn"]>div {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 1.25rem;
+    }
+
+    main[lang="bn"]>div>div:last-child {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+}

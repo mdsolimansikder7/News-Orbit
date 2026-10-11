@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import AuthButtons from "./AuthButton";
+import AuthButtons from "./AuthButtons";
 
 const Headerpage = () => {
   const date = new Date().toLocaleDateString("bn-BD", {
@@ -12,10 +12,8 @@ const Headerpage = () => {
     <header className="w-full border-b border-gray-200 bg-white">
       <div className="mx-auto grid max-w-7xl grid-cols-2 items-center gap-4 px-4 py-4 sm:px-6 md:grid-cols-3">
 
-        {/* বাম পাশ */}
         <div className="hidden md:block" />
 
-        {/* লোগো ও ওয়েবসাইটের নাম */}
         <Link
           href="/"
           className="flex items-center justify-start gap-2 sm:gap-3 md:justify-center"
@@ -40,7 +38,6 @@ const Headerpage = () => {
           </div>
         </Link>
 
-        {/* অ্যাকাউন্ট: login থাকলে প্রোফাইল, না থাকলে সাইন ইন ও সাইন আপ */}
         <nav
           aria-label="অ্যাকাউন্ট নেভিগেশন"
           className="flex items-center justify-end"
