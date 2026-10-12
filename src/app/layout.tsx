@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Navlinks from "../components/Navlinks";
 import Marquee from "../components/Marquee";
 import ToasterProvider from "../components/ToastProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const notoSerifBengali = Noto_Serif_Bengali({
   subsets: ["latin", "bengali"],
@@ -36,6 +37,7 @@ export default function RootLayout({
         <Marquee />
 
         <div>{children}</div>
+        <SpeedInsights/>
       </body>
     </html>
   );
