@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "../components/Header";
 import Navlinks from "../components/Navlinks";
 import Marquee from "../components/Marquee";
+import ToasterProvider from "../components/ToastProvider";
 
 const notoSerifBengali = Noto_Serif_Bengali({
   subsets: ["latin", "bengali"],
@@ -12,9 +13,9 @@ const notoSerifBengali = Noto_Serif_Bengali({
 export const metadata: Metadata = {
   title: "News Orbit",
   description: "বাংলা ভাষায় সর্বশেষ খবর",
- icons: {
-icon: "/NO.png",
-  },  
+  icons: {
+    icon: "/NO.png",
+  },
 };
 
 export default function RootLayout({
@@ -25,6 +26,8 @@ export default function RootLayout({
   return (
     <html lang="bn" data-theme="light" className={notoSerifBengali.className}>
       <body>
+        <ToasterProvider />
+
         <div>
           <Header />
           <Navlinks />

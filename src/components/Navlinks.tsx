@@ -22,7 +22,7 @@ const Navlinks = async () => {
   const filteredCategories = categories.filter((category) => category.scrapable);
 
   return (
-    <nav className="flex flex-wrap justify-center gap-6 px-4 py-3 text-sm whitespace-nowrap">
+    <nav className="hidden md:flex flex-wrap justify-center gap-6 px-4 py-3 text-sm whitespace-nowrap">
       {/* হোম লিংক একবারই */}
       <Link href="/" className="hover:text-red-700">
         হোম

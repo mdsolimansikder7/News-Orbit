@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
-import { Check, CircleXmark, CircleCheck } from "@gravity-ui/icons";
+import { Check } from "@gravity-ui/icons";
 
 import {
   Button,
@@ -16,14 +17,14 @@ import {
 } from "@heroui/react";
 
 import { authClient } from "@/lib/auth-client";
+import Spinner from "@/components/Spinner";
+import LoadingScreen from "@/components/LoadingScreen";
 
-// ফিল্ডগুলোর স্টাইল
 const labelStyle = "mb-1.5 block text-sm font-semibold text-gray-700";
 const inputStyle =
   "h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-sm text-gray-900 placeholder:text-gray-400 transition focus:border-red-600 focus:bg-white focus:outline-none focus:ring-4 focus:ring-red-100";
 const descriptionStyle = "mt-1.5 text-xs font-normal text-gray-500";
 
-// তথ্য না থাকলে যা দেখাবে
 const EMPTY_TEXT = "যোগ করা হয়নি";
 
 export default function ProfilePage() {
@@ -31,7 +32,6 @@ export default function ProfilePage() {
 
   const { data: session, isPending } = authClient.useSession();
 
-  // "info" = আমার তথ্য, "edit" = প্রোফাইল আপডেট
   const [tab, setTab] = useState<"info" | "edit">("info");
 
   const [name, setName] = useState("");
@@ -43,17 +43,14 @@ export default function ProfilePage() {
 
   const [imageError, setImageError] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [loggingOut, setLoggingOut] = useState(false);
 
-  // লগইন না থাকলে sign-in পেজে পাঠিয়ে দেবে
   useEffect(() => {
     if (!isPending && !session) {
       router.push("/sign-in");
     }
   }, [isPending, session, router]);
 
-  // session আসলে ফর্মে আগের তথ্য বসিয়ে দেবে
   useEffect(() => {
     if (session?.user) {
       setName(session.user.name || "");
@@ -65,34 +62,40 @@ export default function ProfilePage() {
     }
   }, [session]);
 
-  // ছবির লিংক বদলালে আগের error মুছে দেবে
   useEffect(() => {
     setImageError(false);
   }, [imageUrl]);
 
   const handleLogout = async () => {
+    setLoggingOut(true);
+    const toastId = toast.loading("লগ আউট হচ্ছে...");
+
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
+          toast.success("সফলভাবে লগ আউট হয়েছে।", { id: toastId });
           router.push("/");
           router.refresh();
         },
+        onError: () => {
+          toast.error("লগ আউট করা যায়নি। আবার চেষ্টা করুন।", { id: toastId });
+        },
       },
     });
+
+    setLoggingOut(false);
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setErrorMessage("");
-    setSuccessMessage("");
-
     if (!name.trim()) {
-      setErrorMessage("নাম খালি রাখা যাবে না।");
+      toast.error("নাম খালি রাখা যাবে না।");
       return;
     }
 
     setSaving(true);
+    const toastId = toast.loading("সংরক্ষণ হচ্ছে...");
 
     try {
       const { error } = await authClient.updateUser({
@@ -105,43 +108,37 @@ export default function ProfilePage() {
       });
 
       if (error) {
-        setErrorMessage(
-          error.message || "প্রোফাইল আপডেট করা যায়নি। আবার চেষ্টা করুন।"
+        toast.error(
+          error.message || "প্রোফাইল আপডেট করা যায়নি। আবার চেষ্টা করুন।",
+          { id: toastId }
         );
         return;
       }
 
-      setSuccessMessage("প্রোফাইল সফলভাবে আপডেট হয়েছে!");
+      toast.success("প্রোফাইল সফলভাবে আপডেট হয়েছে!", { id: toastId });
+      setTab("info");
     } catch (error) {
       console.error("Profile update error:", error);
-      setErrorMessage("প্রোফাইল আপডেটে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+      toast.error("প্রোফাইল আপডেটে সমস্যা হয়েছে। আবার চেষ্টা করুন।", {
+        id: toastId,
+      });
     } finally {
       setSaving(false);
     }
   };
 
-  // লোড হচ্ছে
   if (isPending || !session) {
-    return (
-      <main
-        lang="bn"
-        className="flex min-h-[60vh] items-center justify-center bg-gray-50"
-      >
-        <p className="text-gray-500">লোড হচ্ছে...</p>
-      </main>
-    );
+    return <LoadingScreen message="আপনার প্রোফাইল লোড হচ্ছে..." />;
   }
 
   const user = session.user;
 
-  // যোগ দেওয়ার তারিখ
   const joinedDate = new Date(user.createdAt).toLocaleDateString("bn-BD", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
 
-  // জন্মতারিখ সুন্দর করে দেখানোর জন্য
   const birthDateText = user.birthDate
     ? new Date(user.birthDate).toLocaleDateString("bn-BD", {
         year: "numeric",
@@ -152,7 +149,6 @@ export default function ProfilePage() {
 
   const showImage = user.image && !imageError;
 
-  // "আমার তথ্য" ট্যাবের সারিগুলো
   const infoRows = [
     { label: "নাম", value: user.name },
     { label: "ইমেইল", value: user.email },
@@ -168,11 +164,9 @@ export default function ProfilePage() {
       className="min-h-[80vh] bg-gradient-to-br from-red-50 via-white to-orange-50 px-4 py-10"
     >
       <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-3xl border border-red-100 bg-white shadow-xl shadow-red-100/50">
-        {/* ব্যানার */}
         <div className="h-32 w-full bg-gradient-to-r from-red-700 via-red-500 to-orange-400" />
 
         <div className="px-6 pb-8 sm:px-8">
-          {/* ছবি + নাম */}
           <div className="-mt-14 flex flex-col items-center text-center sm:flex-row sm:items-end sm:gap-5 sm:text-left">
             {showImage ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -196,14 +190,12 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* bio */}
           {user.bio && (
             <p className="mt-5 rounded-2xl bg-red-50/60 px-4 py-3 text-center text-sm leading-relaxed text-gray-700 sm:text-left">
               {user.bio}
             </p>
           )}
 
-          {/* ট্যাব বাটন */}
           <div className="mt-6 flex gap-2 rounded-xl bg-gray-100 p-1">
             <button
               type="button"
@@ -218,11 +210,7 @@ export default function ProfilePage() {
             </button>
             <button
               type="button"
-              onClick={() => {
-                setTab("edit");
-                setErrorMessage("");
-                setSuccessMessage("");
-              }}
+              onClick={() => setTab("edit")}
               className={`flex-1 cursor-pointer rounded-lg py-2.5 text-sm font-semibold transition ${
                 tab === "edit"
                   ? "bg-white text-red-700 shadow"
@@ -233,7 +221,6 @@ export default function ProfilePage() {
             </button>
           </div>
 
-          {/* ট্যাব ১: আমার তথ্য */}
           {tab === "info" && (
             <div className="mt-6">
               <div className="divide-y divide-gray-100 rounded-2xl border border-gray-100">
@@ -283,51 +270,18 @@ export default function ProfilePage() {
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="flex h-11 flex-1 cursor-pointer items-center justify-center rounded-xl border border-gray-200 font-medium text-gray-600 transition hover:bg-gray-50"
+                  disabled={loggingOut}
+                  className="flex h-11 flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-200 font-medium text-gray-600 transition hover:bg-gray-50 disabled:opacity-60"
                 >
+                  {loggingOut && <Spinner size={16} />}
                   লগ আউট
                 </button>
               </div>
             </div>
           )}
 
-          {/* ট্যাব ২: প্রোফাইল আপডেট */}
           {tab === "edit" && (
             <div className="mt-6">
-              {errorMessage && (
-                <div
-                  role="alert"
-                  className="mb-5 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
-                >
-                  <CircleXmark
-                    width={20}
-                    height={20}
-                    className="mt-0.5 shrink-0"
-                  />
-                  <div>
-                    <p className="font-semibold">আপডেট করা যায়নি</p>
-                    <p className="mt-1">{errorMessage}</p>
-                  </div>
-                </div>
-              )}
-
-              {successMessage && (
-                <div
-                  role="status"
-                  className="mb-5 flex items-start gap-3 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700"
-                >
-                  <CircleCheck
-                    width={20}
-                    height={20}
-                    className="mt-0.5 shrink-0"
-                  />
-                  <div>
-                    <p className="font-semibold">সফল হয়েছে</p>
-                    <p className="mt-1">{successMessage}</p>
-                  </div>
-                </div>
-              )}
-
               <Form className="flex flex-col gap-5" onSubmit={onSubmit}>
                 <TextField
                   isRequired
@@ -360,7 +314,6 @@ export default function ProfilePage() {
                   value={phone}
                   onChange={setPhone}
                   validate={(value) => {
-                    // ফাঁকা রাখলে সমস্যা নেই
                     if (!value) return null;
 
                     if (!/^(\+?88)?01[3-9]\d{8}$/.test(value)) {
@@ -402,7 +355,6 @@ export default function ProfilePage() {
                   />
                 </TextField>
 
-                {/* নিজের সম্পর্কে লেখা */}
                 <div>
                   <label htmlFor="bio" className={labelStyle}>
                     নিজের সম্পর্কে
@@ -433,7 +385,6 @@ export default function ProfilePage() {
                   </Description>
                 </TextField>
 
-                {/* নতুন ছবির preview */}
                 <div className="flex items-center gap-4 rounded-2xl border border-dashed border-red-200 bg-red-50/50 p-4">
                   {imageUrl && !imageError ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -464,7 +415,7 @@ export default function ProfilePage() {
                     isDisabled={saving}
                     className="flex h-11 flex-[2] items-center justify-center gap-2 rounded-xl bg-red-700 font-semibold text-white shadow-md shadow-red-200 transition hover:bg-red-800 disabled:opacity-60"
                   >
-                    <Check width={18} height={18} />
+                    {saving ? <Spinner /> : <Check width={18} height={18} />}
                     {saving ? "সংরক্ষণ হচ্ছে..." : "সংরক্ষণ করুন"}
                   </Button>
 
@@ -480,8 +431,6 @@ export default function ProfilePage() {
                       setBirthDate(user.birthDate || "");
                       setAddress(user.address || "");
                       setBio(user.bio || "");
-                      setErrorMessage("");
-                      setSuccessMessage("");
                       setTab("info");
                     }}
                   >
